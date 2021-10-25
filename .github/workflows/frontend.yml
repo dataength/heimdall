@@ -11,7 +11,7 @@ on:
       - main
     paths:
       - "heimdall-frontend/**"
-  workflow_dispatch
+  workflow_dispatch:
 
 jobs:
   build-frontend:
