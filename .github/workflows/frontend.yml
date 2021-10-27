@@ -1,0 +1,39 @@
+name: frontend:test and build
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "heimdall-frontend/**"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "heimdall-frontend/**"
+  workflow_dispatch:
+
+jobs:
+  build-frontend:
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        working-directory: ./heimdall-frontend
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      - name: Cache  💾
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+      - name: Install and Build 🔧
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+      - run: npm install
+      - run: npm run test
+      - run: npm run build
